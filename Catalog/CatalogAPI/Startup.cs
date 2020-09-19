@@ -31,7 +31,7 @@ namespace CatalogAPI
         {
             services.AddControllers();
             services.AddApplication(Configuration);
-            services.AddPersistance();
+            services.AddPersistance(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

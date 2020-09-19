@@ -7,6 +7,7 @@ using CatalogApplication.Queries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
+using CatalogApplication.Commands;
 
 namespace CatalogAPI.Controllers
 {
@@ -25,6 +26,11 @@ namespace CatalogAPI.Controllers
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _mediator.Send(new GetAllProducts()));
+        }
+
+        public async Task<IActionResult> AddNewProduct([FromBody] AddProductCommand addProductCommand)
+        {
+            return Ok(await _mediator.Send(addProductCommand));
         }
     }
 }

@@ -7,6 +7,7 @@ using CatalogPersistance.Interfaces;
 using CatalogPersistance.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using AutoMapper;
 
 namespace CatalogPersistance
 {
@@ -16,6 +17,8 @@ namespace CatalogPersistance
         {
             services.AddScoped(typeof(IMongoDataStore<>), typeof(MongoDataStore<>));
             services.AddScoped<ICatalogRepository, CatalogRepository>();
+            services.AddScoped<IEventsRepository, EventsRepository>();
+            services.AddScoped<IMapper>(options => new Mapper(AutoMapperConfig.CreateConfig()));
             services.Configure<MongoSettings>(config.GetSection("MongoDB"));
             return services;
         }

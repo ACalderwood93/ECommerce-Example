@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CatalogPersistance.Entities
+namespace CatalogPersistance.Entities.Events
 {
     public class ProductAddedEvent : BaseEventEntity
     {

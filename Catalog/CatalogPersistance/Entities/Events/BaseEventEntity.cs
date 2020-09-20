@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CatalogPersistance.Entities
+namespace CatalogPersistance.Entities.Events
 {
     [CollectionName("Events")]
     public class BaseEventEntity : BaseMongoEntity
@@ -14,5 +14,7 @@ namespace CatalogPersistance.Entities
         [BsonRepresentation(BsonType.String)]
         public Guid AggregateId { get; set; }
         public virtual string EventName { get; set; }
+
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
     }
 }

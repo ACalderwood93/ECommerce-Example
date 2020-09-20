@@ -32,6 +32,9 @@ namespace CatalogPersistance.Datastore
         public async Task<IList<T>> GetAllAsync() => await _collection.Find(_ => true).ToListAsync();
         public async Task<IList<T>> FindAsync(Expression<Func<T, bool>> filter) => await _collection.Find(filter).ToListAsync();
         public async Task InsertAsync(T aggregate) => await _collection.InsertOneAsync(aggregate);
+        public async Task UpdateAsync(T aggregate) => await _collection.ReplaceOneAsync(x => x.id == aggregate.id, aggregate);
+        public async Task UpdateAsync(T aggregate, Func<T, Guid> selector) => await _collection.ReplaceOneAsync(x => selector(x) == selector(aggregate), aggregate);
+
 
 
         private string GetCollectionName()

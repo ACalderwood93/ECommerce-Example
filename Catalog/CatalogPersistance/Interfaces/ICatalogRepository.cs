@@ -12,5 +12,9 @@ namespace CatalogPersistance.Interfaces
         Task<IEnumerable<Product>> GetAllActive();
 
         Task InsertAsync(Product product);
+
+        Task<Product> GetByIdAsync(Guid productId);
+
+        Task ReplaceAsync(Product product);
     }
 }

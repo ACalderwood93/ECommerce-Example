@@ -1,4 +1,4 @@
-﻿using CatalogPersistance.Entities;
+﻿using CatalogPersistance.Entities.Events;
 using CatalogPersistance.Interfaces;
 using System;
 using System.Collections.Generic;

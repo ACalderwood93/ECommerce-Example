@@ -14,5 +14,8 @@ namespace CatalogPersistance.Interfaces
 
         Task InsertAsync(T aggregate);
 
+        Task UpdateAsync(T aggregate);
+
+        Task UpdateAsync(T aggregate, Func<T, Guid> selector);
     }
 }

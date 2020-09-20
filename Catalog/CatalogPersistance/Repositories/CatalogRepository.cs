@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using CatalogDomain.Models;
-using CatalogPersistance.Configuration;
 using CatalogPersistance.Entities;
+using CatalogPersistance.Entities.Events;
 using CatalogPersistance.Interfaces;
-using Microsoft.Extensions.Options;
-using MongoDB.Driver;
+using System.Linq;
 
 namespace CatalogPersistance.Repositories
 {
@@ -29,14 +26,15 @@ namespace CatalogPersistance.Repositories
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
             var result = await _dataStore.GetAllAsync();
-            return _mapper.Map<IEnumerable<ProductEntity>, IEnumerable<Product>>(result);
+            return _mapper.Map<IEnumerable<Product>>(result);
         }
 
         public async Task<IEnumerable<Product>> GetAllActive()
         {
             var results = await _dataStore.FindAsync(x => x.Active);
-            return _mapper.Map<IEnumerable<ProductEntity>, IEnumerable<Product>>(results);
+            return _mapper.Map<IEnumerable<Product>>(results);
         }
+
 
         public async Task InsertAsync(Product product)
         {
@@ -47,7 +45,30 @@ namespace CatalogPersistance.Repositories
                 AggregateId = product.ProductId,
                 NewProduct = entity
             });
-                
+
+        }
+
+        public async Task<Product> GetByIdAsync(Guid productId)
+        {
+            var entityResult = (await _dataStore.FindAsync(x => x.ProductId == productId)).FirstOrDefault();
+            return _mapper.Map<Product>(entityResult);
+        }
+
+        public async Task ReplaceAsync(Product product)
+        {
+            var existingProduct = (await _dataStore.FindAsync(x => x.ProductId == product.ProductId)).FirstOrDefault();
+
+            existingProduct.Name = product.Name;
+            existingProduct.Price = product.Price;
+            existingProduct.Category = product.Category;
+            existingProduct.Active = product.Active;
+
+            await _dataStore.UpdateAsync(existingProduct);
+            await _eventsRepository.InsertAsync(new ProductUpdatedEvent
+            {
+                AggregateId = product.ProductId,
+                UpdatedProduct = existingProduct
+            });
         }
 
     }

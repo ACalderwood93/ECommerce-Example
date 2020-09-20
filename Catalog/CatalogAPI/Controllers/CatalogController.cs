@@ -23,14 +23,13 @@ namespace CatalogAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            return Ok(await _mediator.Send(new GetAllProducts()));
-        }
+        public async Task<IActionResult> GetAll() => Ok(await _mediator.Send(new GetAllProducts()));
 
-        public async Task<IActionResult> AddNewProduct([FromBody] AddProductCommand addProductCommand)
-        {
-            return Ok(await _mediator.Send(addProductCommand));
-        }
+        [HttpPost]
+        public async Task<IActionResult> AddNewProduct([FromBody] AddProductCommand addProductCommand) => Ok(await _mediator.Send(addProductCommand));
+
+        [HttpPost("Update")]
+        public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductCommand updateProductCommand) => Ok(await _mediator.Send(updateProductCommand));
+
     }
 }
